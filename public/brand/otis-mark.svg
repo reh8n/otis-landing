@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 869 869" role="img" aria-labelledby="title description">
+  <title id="title">Otis</title>
+  <desc id="description">A black hand-drawn face on a white rounded square.</desc>
+  <rect x="8" y="8" width="853" height="853" rx="190" fill="#fff"/>
+  <g fill="#000">
+    <rect x="256" y="169" width="106" height="224" rx="53"/>
+    <rect x="532" y="170" width="106" height="233" rx="53"/>
+  </g>
+  <path d="M496 429 C499 455 513 477 531 498 C539 507 545 518 543 524 C538 530 520 521 498 522" fill="none" stroke="#000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M346 638 C374 687 403 715 451 719 C505 720 539 709 558 663" fill="none" stroke="#000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
