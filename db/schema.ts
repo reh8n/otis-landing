@@ -1,10 +1,11 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-export const waitlistSignups = sqliteTable("waitlist_signups", {
-  id: text("id").primaryKey(),
+export const waitlistSignups = pgTable("waitlist_signups", {
+  id: uuid("id").primaryKey(),
   normalizedEmail: text("normalized_email").notNull().unique(),
   originalEmail: text("original_email").notNull(),
-  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
   source: text("source"),
 });

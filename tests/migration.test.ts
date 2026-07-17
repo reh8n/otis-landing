@@ -1,39 +1,17 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
-import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 
 test("generated migration creates the waitlist schema and unique email constraint", () => {
   const migration = readdirSync("drizzle").find((name) => name.endsWith(".sql"));
   assert.ok(migration, "expected a generated Drizzle migration");
 
-  const database = new DatabaseSync(":memory:");
-  database.exec(readFileSync(`drizzle/${migration}`, "utf8"));
-
-  const columns = database
-    .prepare("PRAGMA table_info(waitlist_signups)")
-    .all()
-    .map((column) => String(column.name));
-
-  assert.deepEqual(columns, [
-    "id",
-    "normalized_email",
-    "original_email",
-    "created_at",
-    "source",
-  ]);
-
-  const insert = database.prepare(
-    `INSERT INTO waitlist_signups
-      (id, normalized_email, original_email)
-     VALUES (?, ?, ?)`,
-  );
-  insert.run("one", "person@example.com", "Person@example.com");
-
-  assert.throws(
-    () => insert.run("two", "person@example.com", "person@example.com"),
-    /UNIQUE constraint failed/,
-  );
-
-  database.close();
+  const sql = readFileSync(`drizzle/${migration}`, "utf8");
+  assert.match(sql, /CREATE TABLE "waitlist_signups"/);
+  assert.match(sql, /"id" uuid PRIMARY KEY NOT NULL/);
+  assert.match(sql, /"normalized_email" text NOT NULL/);
+  assert.match(sql, /"original_email" text NOT NULL/);
+  assert.match(sql, /"created_at" timestamp with time zone DEFAULT now\(\) NOT NULL/);
+  assert.match(sql, /"source" text/);
+  assert.match(sql, /CONSTRAINT "waitlist_signups_normalized_email_unique" UNIQUE\("normalized_email"\)/);
 });

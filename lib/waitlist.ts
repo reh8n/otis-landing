@@ -9,10 +9,10 @@ export const WAITLIST_VALIDATION_MESSAGE =
 
 export const CREATE_WAITLIST_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS waitlist_signups (
-    id TEXT PRIMARY KEY NOT NULL,
+    id UUID PRIMARY KEY NOT NULL,
     normalized_email TEXT NOT NULL UNIQUE,
     original_email TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     source TEXT
   )
 `;
@@ -23,13 +23,8 @@ export type NormalizedSignup = {
   source: string | null;
 };
 
-type WaitlistStatement = {
-  bind(...values: unknown[]): WaitlistStatement;
-  run(): Promise<unknown>;
-};
-
 export type WaitlistDatabase = {
-  prepare(query: string): WaitlistStatement;
+  query(query: string, params?: unknown[]): Promise<unknown>;
 };
 
 function isValidDomain(domain: string) {
@@ -87,21 +82,20 @@ export async function saveWaitlistSignup(
   database: WaitlistDatabase,
   signup: NormalizedSignup,
 ) {
-  await database.prepare(CREATE_WAITLIST_TABLE_SQL).run();
+  await database.query(CREATE_WAITLIST_TABLE_SQL);
 
-  await database
-    .prepare(
-      `INSERT OR IGNORE INTO waitlist_signups
-        (id, normalized_email, original_email, source)
-       VALUES (?1, ?2, ?3, ?4)`,
-    )
-    .bind(
+  await database.query(
+    `INSERT INTO waitlist_signups
+      (id, normalized_email, original_email, source)
+     VALUES ($1, $2, $3, $4)
+     ON CONFLICT (normalized_email) DO NOTHING`,
+    [
       crypto.randomUUID(),
       signup.normalizedEmail,
       signup.originalEmail,
       signup.source,
-    )
-    .run();
+    ],
+  );
 }
 
 export async function handleWaitlistPost(
@@ -138,7 +132,7 @@ export async function handleWaitlistPost(
   }
 
   try {
-    if (!database) throw new Error("D1 binding DB is unavailable");
+    if (!database) throw new Error("DATABASE_URL is unavailable");
     await saveWaitlistSignup(database, signup);
 
     return Response.json({
