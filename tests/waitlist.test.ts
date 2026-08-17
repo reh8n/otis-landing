@@ -46,11 +46,8 @@ test("repeat normalized signups use an idempotent insert", async () => {
   let insertSql = "";
 
   const database: WaitlistDatabase = {
-    async query(query, values = []) {
-      if (query.includes("ON CONFLICT")) {
-        insertSql = query;
-        emails.add(String(values[1]));
-      }
+    prepare(query) {
+      return { bind(...values: unknown[]) { if (query.includes("INSERT OR IGNORE")) { insertSql = query; emails.add(String(values[1])); } return this; }, async run() {} };
     },
   };
 
@@ -62,7 +59,7 @@ test("repeat normalized signups use an idempotent insert", async () => {
   await saveWaitlistSignup(database, first);
   await saveWaitlistSignup(database, repeat);
 
-  assert.match(insertSql, /ON CONFLICT \(normalized_email\) DO NOTHING/);
+  assert.match(insertSql, /INSERT OR IGNORE INTO waitlist_signups/);
   assert.deepEqual([...emails], ["person@example.com"]);
 });
 
@@ -87,9 +84,7 @@ test("the HTTP contract returns a generic server error when storage fails", asyn
   const error = new Error("database unavailable");
   let reported: unknown;
   const database: WaitlistDatabase = {
-    async query() {
-      throw error;
-    },
+    prepare() { return { bind() { return this; }, async run() { throw error; } }; },
   };
 
   const response = await handleWaitlistPost(

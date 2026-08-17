@@ -7,11 +7,11 @@ test("generated migration creates the waitlist schema and unique email constrain
   assert.ok(migration, "expected a generated Drizzle migration");
 
   const sql = readFileSync(`drizzle/${migration}`, "utf8");
-  assert.match(sql, /CREATE TABLE "waitlist_signups"/);
-  assert.match(sql, /"id" uuid PRIMARY KEY NOT NULL/);
-  assert.match(sql, /"normalized_email" text NOT NULL/);
-  assert.match(sql, /"original_email" text NOT NULL/);
-  assert.match(sql, /"created_at" timestamp with time zone DEFAULT now\(\) NOT NULL/);
-  assert.match(sql, /"source" text/);
-  assert.match(sql, /CONSTRAINT "waitlist_signups_normalized_email_unique" UNIQUE\("normalized_email"\)/);
+  assert.match(sql, /CREATE TABLE `waitlist_signups`/);
+  assert.match(sql, /`id` text PRIMARY KEY NOT NULL/);
+  assert.match(sql, /`normalized_email` text NOT NULL/);
+  assert.match(sql, /`original_email` text NOT NULL/);
+  assert.match(sql, /`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL/);
+  assert.match(sql, /`source` text/);
+  assert.match(sql, /CREATE UNIQUE INDEX `waitlist_signups_normalized_email_unique`/);
 });

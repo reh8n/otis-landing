@@ -9,10 +9,10 @@ export const WAITLIST_VALIDATION_MESSAGE =
 
 export const CREATE_WAITLIST_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS waitlist_signups (
-    id UUID PRIMARY KEY NOT NULL,
+    id TEXT PRIMARY KEY NOT NULL,
     normalized_email TEXT NOT NULL UNIQUE,
     original_email TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     source TEXT
   )
 `;
@@ -23,9 +23,8 @@ export type NormalizedSignup = {
   source: string | null;
 };
 
-export type WaitlistDatabase = {
-  query(query: string, params?: unknown[]): Promise<unknown>;
-};
+type WaitlistStatement = { bind(...values: unknown[]): WaitlistStatement; run(): Promise<unknown> };
+export type WaitlistDatabase = { prepare(query: string): WaitlistStatement };
 
 function isValidDomain(domain: string) {
   if (domain.length > 253 || !domain.includes(".") || domain.includes("..")) {
@@ -82,20 +81,17 @@ export async function saveWaitlistSignup(
   database: WaitlistDatabase,
   signup: NormalizedSignup,
 ) {
-  await database.query(CREATE_WAITLIST_TABLE_SQL);
-
-  await database.query(
-    `INSERT INTO waitlist_signups
+  await database.prepare(CREATE_WAITLIST_TABLE_SQL).run();
+  await database.prepare(
+    `INSERT OR IGNORE INTO waitlist_signups
       (id, normalized_email, original_email, source)
-     VALUES ($1, $2, $3, $4)
-     ON CONFLICT (normalized_email) DO NOTHING`,
-    [
+     VALUES (?1, ?2, ?3, ?4)`,
+  ).bind(
       crypto.randomUUID(),
       signup.normalizedEmail,
       signup.originalEmail,
       signup.source,
-    ],
-  );
+  ).run();
 }
 
 export async function handleWaitlistPost(

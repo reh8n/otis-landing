@@ -1,14 +1,8 @@
-import { neon } from "@neondatabase/serverless";
-import type { WaitlistDatabase } from "../lib/waitlist";
+import { env } from "cloudflare:workers";
+import { drizzle } from "drizzle-orm/d1";
+import * as schema from "./schema";
 
-export function getWaitlistDatabase(): WaitlistDatabase | null {
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) return null;
-
-  const sql = neon(databaseUrl);
-  return {
-    query(query, params = []) {
-      return sql.query(query, params);
-    },
-  };
+export function getDb() {
+  if (!env.DB) throw new Error("Cloudflare D1 binding `DB` is unavailable.");
+  return drizzle(env.DB, { schema });
 }
