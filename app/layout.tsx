@@ -29,33 +29,33 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(origin),
-    title: "Otis — Your personal AI, at work",
+    title: "Otis — One intelligence. Four focused products.",
     description:
-      "Otis brings your context, projects, and desktop actions together—with you in control.",
+      "Meet the Otis ecosystem: private AI products for personal work, business operations, and building software with agents.",
     icons: {
       icon: "/brand/otis-mark.svg",
       shortcut: "/brand/otis-mark.svg",
       apple: "/brand/otis-180.png",
     },
     openGraph: {
-      title: "Otis — Your personal AI, at work",
+      title: "Otis — Your work has a new ecosystem",
       description:
-        "Your context. Your projects. Your desktop. One private workspace.",
+        "Personal, Business, IDE, and Ecosystem—four focused products designed to feel like one calm system.",
       type: "website",
       images: [
         {
           url: socialImage,
           width: 1200,
           height: 630,
-          alt: "Otis — Your personal AI. At work.",
+          alt: "Otis — Your work has a new ecosystem.",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Otis — Your personal AI, at work",
+      title: "Otis — Your work has a new ecosystem",
       description:
-        "Your context. Your projects. Your desktop. One private workspace.",
+        "Personal, Business, IDE, and Ecosystem—four focused products designed to feel like one calm system.",
       images: [socialImage],
     },
   };
