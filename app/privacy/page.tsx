@@ -1,38 +1,45 @@
 import type { Metadata } from "next";
-import { MessageReveal, TypewriterText } from "../../components/MotionText";
 import { SiteFooter, SiteHeader } from "../../components/SiteChrome";
+import { links } from "../../lib/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Otis",
-  description: "How the Otis landing page handles waitlist and website data.",
-  openGraph: { title: "Privacy Policy | Otis", description: "How the Otis landing page handles waitlist and website data.", images: [] },
-  twitter: { card: "summary", title: "Privacy Policy | Otis", description: "How the Otis landing page handles waitlist and website data.", images: [] },
+  title: "Privacy | Otis IDE",
+  description: "How the Otis IDE app and this website handle your data.",
+  openGraph: { title: "Privacy | Otis IDE", description: "How the Otis IDE app and this website handle your data." },
+  twitter: { card: "summary", title: "Privacy | Otis IDE", description: "How the Otis IDE app and this website handle your data." },
 };
 
 export default function PrivacyPage() {
   return (
-    <div className="privacy-page">
+    <>
       <a className="skip-link" href="#main">Skip to content</a>
-      <SiteHeader compact />
-      <main className="policy-shell" id="main">
-        <MessageReveal as="p" className="eyebrow"><span className="status-dot" /> Draft for launch review</MessageReveal>
-        <TypewriterText as="h1" text="Privacy, in plain language." accent="plain language." />
-        <MessageReveal as="p" className="policy-intro" delay={220}>This policy explains what the Otis landing page collects today, why it is collected, and the choices available to you.</MessageReveal>
+      <SiteHeader />
+      <main className="wrap policy" id="main">
+        <p className="kicker">Privacy</p>
+        <h1>Privacy, in plain language.</h1>
+        <p className="policy-intro">The short version: the app keeps everything on your Mac, and this website only sees what any web host sees.</p>
 
-        <div className="policy-notice"><strong>Legal details still to add</strong><p>The operating legal name, jurisdiction, postal address, and privacy contact will be added before the site is opened publicly. This draft does not invent them.</p></div>
-
-        <section className="policy-content">
-          <article><h2>1. What we collect</h2><p>If you join the waitlist, we collect the email address you submit, a normalized lowercase copy used to prevent duplicate signups, the form location, and the time of signup. The landing page may also receive ordinary technical request data from its hosting providers, such as an IP address, browser details, and security logs.</p></article>
-          <article><h2>2. Why we collect it</h2><p>We use waitlist information to provide requested Otis launch updates, manage early access, prevent duplicate records, protect the site, and understand whether the signup flow is operating correctly.</p></article>
-          <article><h2>3. Where it is processed</h2><p>The site is hosted through Vercel and OpenAI Sites environments. Waitlist records are stored in the database connected to the environment where you submit the form. Those providers may process technical data under their own service terms.</p></article>
-          <article><h2>4. Sharing</h2><p>We do not sell waitlist information. Data may be handled by hosting, database, security, and infrastructure providers only as needed to operate the site or meet legal obligations.</p></article>
-          <article><h2>5. Retention and deletion</h2><p>Waitlist records are kept while Otis is preparing and operating early access, unless they are no longer needed or deletion is requested. A precise retention period and request channel will be added with the final legal contact details.</p></article>
-          <article><h2>6. Your choices</h2><p>You can choose not to join the waitlist. Any launch email must include an unsubscribe path. Access, correction, and deletion requests will be handled through the privacy contact published before public launch.</p></article>
-          <article><h2>7. Children</h2><p>The waitlist is not intended for children, and Otis does not knowingly request personal information from children through this page.</p></article>
-          <article><h2>8. Changes</h2><p>This policy will be updated as the site, product availability, and legal operating details change. The effective date will be added when the final policy is approved.</p></article>
-        </section>
+        <article>
+          <h2>The Otis IDE app</h2>
+          <p>Otis IDE runs locally. Rooms, sessions, transcripts, settings and checkpoints are stored on your Mac and never sync between machines. There is no Otis account, no telemetry and no analytics in the app.</p>
+          <p>Your agents run through the Claude Code and Codex CLIs you installed and logged in to. What those tools send to Anthropic or OpenAI is governed by your agreement with them, not by Otis.</p>
+          <p>Otis never keeps the command line of an agent process it observes, since it can carry a private prompt.</p>
+        </article>
+        <article>
+          <h2>This website</h2>
+          <p>The site is hosted on Vercel. Like any host, Vercel may process ordinary request data such as IP address, browser details and security logs to serve and protect the site. The site sets no tracking cookies and runs no analytics scripts.</p>
+          <p>Downloads, issues and discussions live on GitHub, so those pages follow GitHub&apos;s privacy terms.</p>
+        </article>
+        <article>
+          <h2>Earlier waitlist signups</h2>
+          <p>Before Otis IDE was downloadable, this site collected email addresses for an early access waitlist. Those records are kept only to send launch updates, are never sold, and can be deleted on request.</p>
+        </article>
+        <article>
+          <h2>Questions or requests</h2>
+          <p>Open a thread in <a href={links.discussions}>Discussions</a> for general questions. For anything private, such as a deletion request, ask there for a private contact and do not post personal details publicly.</p>
+        </article>
       </main>
       <SiteFooter />
-    </div>
+    </>
   );
 }
