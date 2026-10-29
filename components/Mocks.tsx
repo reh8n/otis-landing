@@ -52,29 +52,6 @@ export function SeatsMock() {
   );
 }
 
-export function InboxMock() {
-  const items = [
-    { kind: "Question", tone: "q", who: "Wren", text: "Hold the lock across worktree creation, or release it first?", room: "#port-allocator", age: "2m" },
-    { kind: "Approval", tone: "a", who: "Mason", text: "Run npm install in otis/tighten-patch-copy", room: "#otis-ide", age: "6m" },
-    { kind: "Patch", tone: "p", who: "Scout", text: "3 hunks in lib/agentWorkspace/ports.ts", room: "#port-allocator", age: "9m" },
-    { kind: "Failed check", tone: "f", who: "Mason", text: "tests/ports.test.ts: 1 failing", room: "#otis-ide", age: "14m" },
-  ];
-  return (
-    <div className="mock mock-inbox" aria-hidden="true">
-      <div className="mock-head"><span>Needs You</span><b className="count">4</b></div>
-      {items.map((it) => (
-        <div className="inbox-row" key={it.text}>
-          <span className={`tag tag--${it.tone}`}>{it.kind}</span>
-          <div className="inbox-main">
-            <p>{it.text}</p>
-            <small>{it.who} in {it.room} · {it.age} ago</small>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function ReviewMock() {
   return (
     <div className="mock mock-review" aria-hidden="true">
@@ -88,37 +65,6 @@ export function ReviewMock() {
         <pre><span className="ln del">-  await serialized(() =&gt; git.worktreeAdd(dir));</span><span className="ln add">+  await git.worktreeAdd(dir);</span></pre>
       </div>
       <div className="review-foot">Checkpoint taken before apply · stale hunks are refused, never guessed</div>
-    </div>
-  );
-}
-
-export function OfficeMock() {
-  const desks = [
-    { name: "Scout", color: "#e0457b", label: "Reading ports.ts", x: 22, y: 26 },
-    { name: "Mason", color: "#9bbf2e", label: "npm test", x: 72, y: 22 },
-    { name: "Wren", color: "#8b5cf6", label: "Waiting on you", x: 28, y: 70, wait: true },
-    { name: "Claude", color: "#d97757", label: "Writing", x: 74, y: 66 },
-  ];
-  return (
-    <div className="mock mock-office" aria-hidden="true">
-      <div className="office-floor">
-        {desks.map((d) => (
-          <div key={d.name} className="desk" style={{ left: `${d.x}%`, top: `${d.y}%` }}>
-            <span className={`bubble${d.wait ? " bubble--wait" : ""}`}>{d.label}</span>
-            <span className="agent" style={{ background: d.color }} />
-            <span className="desk-top" />
-            <span className="desk-name">{d.name}</span>
-          </div>
-        ))}
-      </div>
-      <div className="office-code">
-        <div className="code-tabs"><span className="on">ports.ts</span><span>session.ts</span></div>
-        <pre>{`export async function startManagedSession(task) {
-  const port = await serialized(async () => {
-    return reservePort(await choosePort());
-  });
-  const dir = await createWorktree(task.branch);`}</pre>
-      </div>
     </div>
   );
 }

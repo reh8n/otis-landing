@@ -16,8 +16,17 @@ ready, put it in `public/launch/` and set `launchVideo.src` (and optionally
 
 ## Screenshots
 
-`public/product/*.jpg` are exported from `Otis-IDE/docs/media/*.png` at 1800px
-and 960px wide. `public/og.png` is the 1200x630 social card.
+`public/product/*.jpg` are captures of Otis IDE 0.8.5 running on a scratch
+state directory with scripted stand-in agents (`Otis-IDE/scripts/dev-rig`),
+exported at 1800px and 960px wide in dark and light. `public/og.png` is the
+1200x630 social card.
+
+## Feature orbit
+
+`components/FeatureOrbit.tsx` is the scroll-driven features section: the tiles
+fly in from behind the screen, form a ring that spins, then settle into a grid.
+It runs on `requestAnimationFrame` with no animation library, and falls back to
+a plain grid on the server and for reduced motion.
 
 The waitlist API from the earlier ecosystem site is still in place for existing
 signups; the page no longer shows a signup form.

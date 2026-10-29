@@ -15,30 +15,31 @@ type Frame = {
 
 const frames: Frame[] = [
   {
-    id: "agents",
-    label: "Agents",
-    caption: "Every agent, its branch, its port and its checks on one screen.",
-    light: "/product/agents-full",
-    dark: "/product/agents-full-dark",
+    id: "coding",
+    label: "Coding Mode",
+    caption: "Code, the room and a 3D office of your agents, in one window.",
+    light: "/product/coding-light",
+    dark: "/product/coding-dark",
     width: 1800,
-    height: 1154,
+    height: 1125,
   },
   {
-    id: "rooms",
+    id: "room",
     label: "Rooms",
-    caption: "A room of agents working one problem. @mention who should answer.",
-    light: "/product/agent-chat",
+    caption: "A room of agents on one problem. Their questions wait for you in one tray.",
+    // Only the dark capture shows the questions tray, so both themes use it.
+    light: "/product/room-dark",
     width: 1800,
-    height: 1154,
+    height: 1125,
   },
   {
-    id: "ports",
-    label: "Ports",
-    caption: "One house per port. See who is running where, and evacuate in a click.",
-    light: "/product/neighborhood",
-    dark: "/product/neighborhood-dark",
+    id: "office",
+    label: "Office",
+    caption: "See who is writing, who is idle and who needs you, without reading a word.",
+    light: "/product/office-light",
+    dark: "/product/office-dark",
     width: 1800,
-    height: 819,
+    height: 1125,
   },
 ];
 
@@ -112,7 +113,7 @@ export default function ProductStage() {
           {frames.map((frame, i) => (
             <div
               key={frame.id}
-              className={`stage-frame${i === active ? " is-active" : ""}${frame.height < 1000 ? " is-wide" : ""}`}
+              className={`stage-frame${i === active ? " is-active" : ""}`}
               aria-hidden={i !== active}
             >
               <Shot frame={frame} eager={i === 0} />

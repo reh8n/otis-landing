@@ -1,4 +1,5 @@
-import { InboxMock, OfficeMock, ReviewMock, SeatsMock, SessionsMock } from "../components/Mocks";
+import FeatureOrbit from "../components/FeatureOrbit";
+import { ReviewMock, SeatsMock, SessionsMock } from "../components/Mocks";
 import ProductStage from "../components/ProductStage";
 import { AppleIcon, SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { links } from "../lib/site";
@@ -40,11 +41,11 @@ const features = [
   },
   {
     id: "inbox",
-    kicker: "Needs You",
-    title: "One inbox for everything waiting on a human.",
-    copy: "Questions, approvals, patches to review, failed checks and stuck missions land in one durable queue. Nothing sits forgotten in a room you stopped watching, so your fleet never idles because you missed a prompt.",
-    points: ["Durable across restarts", "Jump straight to the agent", "Clears as you answer"],
-    visual: <InboxMock />,
+    kicker: "Questions tray and Needs You",
+    title: "Nothing waits on you without you knowing.",
+    copy: "Questions from every agent collect in one tray, grouped by who is asking, and go out together when you answer. A strip above the message box shows who is thinking, running something or waiting on you, and Needs You gathers approvals, reviews and failed checks from every project.",
+    points: ["Answer several questions in one go", "Live status for every member", "One queue across projects"],
+    visual: <Shot name="room" darkOnly alt="A room where Wren's question waits in the questions tray" />,
   },
   {
     id: "review",
@@ -58,9 +59,9 @@ const features = [
     id: "office",
     kicker: "Coding Mode",
     title: "Watch the whole team work, without reading a transcript.",
-    copy: "Press ⌘⇧E and the window becomes one project: code on the left, the room on the right, and above it a small 3D office where every agent has a desk. Labels show who is thinking, who is writing, which tool is running and who is waiting on you.",
-    points: ["Live status over every desk", "Click an agent to message it", "Pauses itself when hidden"],
-    visual: <OfficeMock />,
+    copy: "Press ⌘⇧E and the window becomes one project: code on the left, the room on the right, and above it a 3D office where every agent has a desk. Labels show who is writing, who is idle and who needs you. Agents keep working when you switch rooms or go Home.",
+    points: ["Live status over every desk", "Click an agent to message it", "Replies keep running when you leave"],
+    visual: <Shot name="office" alt="The Coding Mode office with four agents at their desks" />,
   },
 ];
 
@@ -74,6 +75,16 @@ const workflows = [
   "Refactor safely",
   "Release-readiness report",
 ];
+
+function Shot({ name, alt, darkOnly = false }: { name: string; alt: string; darkOnly?: boolean }) {
+  const light = darkOnly ? `${name}-dark` : `${name}-light`;
+  return (
+    <picture className="feature-shot">
+      <source media="(prefers-color-scheme: dark)" srcSet={`/product/${name}-dark-960.jpg 960w, /product/${name}-dark.jpg 1800w`} sizes="(max-width: 900px) 100vw, 620px" />
+      <img src={`/product/${light}.jpg`} srcSet={`/product/${light}-960.jpg 960w, /product/${light}.jpg 1800w`} sizes="(max-width: 900px) 100vw, 620px" width={1800} height={1125} alt={alt} loading="lazy" decoding="async" />
+    </picture>
+  );
+}
 
 function Check() {
   return (
@@ -122,7 +133,7 @@ export default function Home() {
             </p>
             <DownloadButtons secondary="releases" />
             <p className="fineprint">
-              Needs a logged-in Claude Code or Codex CLI. Not notarized yet, so open it the first time with right-click, Open.
+              Needs a logged-in Claude Code or Codex CLI. Not notarized yet, so the first launch needs one extra click to allow it.
             </p>
           </div>
           <div className="wrap wrap--wide">
@@ -162,7 +173,9 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="features" id="features" aria-label="Features">
+        <FeatureOrbit />
+
+        <section className="features" aria-label="Feature details">
           {features.map((f, i) => (
             <article className={`feature wrap${i % 2 ? " feature--flip" : ""}`} id={f.id} key={f.id}>
               <div className="feature-copy">
@@ -184,8 +197,8 @@ export default function Home() {
               <p className="kicker">Workflows</p>
               <h2>Start from a template, not a blank room.</h2>
               <p>
-                Eight built-in workflows set up the room, the seats and the task in one step. Pick one and your agents
-                are already arranged for the job.
+                Eight built-in workflows set up the seats and the task in one step, each in a room and office of its
+                own, optionally on a Git branch you can throw away.
               </p>
             </div>
             <ol className="workflow-grid">
@@ -206,8 +219,8 @@ export default function Home() {
                 <span>Grab the latest build from GitHub Releases and drag Otis IDE into Applications.</span>
               </li>
               <li>
-                <strong>Open it once with right-click</strong>
-                <span>Builds are not notarized yet, so the first launch needs right-click, then Open.</span>
+                <strong>Allow it once</strong>
+                <span>Builds are not notarized yet. On first launch use right-click, Open, or on macOS 15 and later System Settings, Privacy &amp; Security, Open Anyway. Updates after that install in the app.</span>
               </li>
               <li>
                 <strong>Pick a project and start an agent</strong>
