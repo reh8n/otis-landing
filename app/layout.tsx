@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
+import { pitch } from "../lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,33 +30,31 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(origin),
-    title: "Otis | One intelligence. Four focused products.",
+    title: "Otis IDE | Run a fleet of coding agents on your Mac",
     description:
-      "Meet the Otis ecosystem: focused AI products for personal work, business operations, and building software with agents.",
+      "Run a fleet of Claude Code and Codex agents in parallel on your Mac, each in its own worktree, branch and port. Free, uses your existing subscription.",
     icons: {
       icon: "/brand/otis-mark.svg",
       shortcut: "/brand/otis-mark.svg",
       apple: "/brand/otis-180.png",
     },
     openGraph: {
-      title: "Otis | Your work has a new ecosystem",
-      description:
-        "Personal, Business, IDE, and Ecosystem: four focused products designed to feel like one calm system.",
+      title: "Otis IDE | Run a fleet of coding agents on your Mac",
+      description: pitch,
       type: "website",
       images: [
         {
           url: socialImage,
           width: 1200,
           height: 630,
-          alt: "Otis | Your work has a new ecosystem.",
+          alt: "Otis IDE",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Otis | Your work has a new ecosystem",
-      description:
-        "Personal, Business, IDE, and Ecosystem: four focused products designed to feel like one calm system.",
+      title: "Otis IDE | Run a fleet of coding agents on your Mac",
+      description: pitch,
       images: [socialImage],
     },
   };

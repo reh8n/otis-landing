@@ -1,7 +1,35 @@
-# Otis public landing site
+# Otis IDE landing site
 
-The standalone public marketing site for Otis. It runs as a native Next.js
-application on Vercel, with a Neon Postgres database for waitlist signups.
+The public launch page for Otis IDE, a free macOS app that runs a fleet of
+Claude Code and Codex agents in parallel, each in its own worktree, branch and
+port. It runs as a Next.js application on Vercel.
+
+Every outbound link points at the public storefront repo
+`reh8n/otis-ide-releases` (downloads, issues, discussions); the links live in
+`lib/site.ts`. The app source is private, so never link to `reh8n/otis-ide`.
+
+## Launch video slot
+
+The hero shows a looping set of product screenshots. When the launch film is
+ready, put it in `public/launch/` and set `launchVideo.src` (and optionally
+`poster`) in `lib/site.ts`; the hero then plays the video instead.
+
+## Screenshots
+
+`public/product/*.jpg` are captures of Otis IDE 0.8.5 running on a scratch
+state directory with scripted stand-in agents (`Otis-IDE/scripts/dev-rig`),
+exported at 1800px and 960px wide in dark and light. `public/og.png` is the
+1200x630 social card.
+
+## Feature orbit
+
+`components/FeatureOrbit.tsx` is the scroll-driven features section: the tiles
+fly in from behind the screen, form a ring that spins, then settle into a grid.
+It runs on `requestAnimationFrame` with no animation library, and falls back to
+a plain grid on the server and for reduced motion.
+
+The waitlist API from the earlier ecosystem site is still in place for existing
+signups; the page no longer shows a signup form.
 
 ## Prerequisites
 
